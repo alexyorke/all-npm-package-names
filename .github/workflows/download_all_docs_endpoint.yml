@@ -23,6 +23,13 @@ jobs:
         env:
           SKIP: ${{ matrix.skip }}
         run: |
+              wget "https://github.com/facebook/zstd/releases/download/v1.4.9/zstd-1.4.9.tar.zst";
+              zstd -d zstd-1.4.9.tar.zst;
+              tar -xf zstd-1.4.9.tar;
+              cd zstd-1.4.9;
+              make;
+              sudo make install;
+              cd ..;
               zstd --version;
               curl --compressed --retry 100 "https://replicate.npmjs.com/_all_docs?limit=100000&skip=$SKIP&include_docs=true" > "_all_docs_include_docs_$SKIP.json" && \
               zstd -T0 --ultra --long -22 "_all_docs_include_docs_$SKIP.json" && du -hs *;
