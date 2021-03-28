@@ -1,0 +1,30 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Download _all_docs endpoint
+
+# Controls when the action will run. 
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        skip: [0, 100000, 200000, 300000]
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Runs a single command using the runners shell
+      - name: Download all packages from the _all_docs endpoints
+        env:
+          SKIP: ${{ matrix.skip }}
+        run: |
+              curl --compressed --retry 100 "https://replicate.npmjs.com/_all_docs" -o _all_docs.json && \
+              zstd -T0 _all_docs.json && \
+              jq -r .rows[].key < _all_docs.json > all_package_names.txt && \
+              du -hs *;
+              grep -F "'" all_package_names.txt;
