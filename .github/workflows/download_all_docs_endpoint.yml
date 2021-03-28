@@ -15,13 +15,15 @@ jobs:
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Runs a single command using the runners shell
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+
       - name: Download all packages from the _all_docs endpoints
-        env:
-          SKIP: ${{ matrix.skip }}
         run: |
               curl --compressed --retry 100 "https://replicate.npmjs.com/_all_docs" -o _all_docs.json && \
-              zstd -T0 _all_docs.json && \
-              jq -r .rows[].key < _all_docs.json > all_package_names.txt && \
-              du -hs *;
-              grep -F "'" all_package_names.txt;
+              jq -r .rows[].key < _all_docs.json > all_package_names.txt;
+              git config --global user.name "github-actions[bot]";
+              git config --global user.email "933164984+github-actions[bot]@users.noreply.github.com";
+              git add all_package_names.txt;
+              git commit -m "Update package names";
+              git push;
