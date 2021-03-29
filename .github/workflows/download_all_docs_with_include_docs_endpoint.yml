@@ -24,7 +24,7 @@ jobs:
           SKIP: ${{ matrix.skip }}
         run: |
               curl --compressed --retry 100 "https://replicate.npmjs.com/_all_docs?limit=100000&include_docs=true&skip=${SKIP}" -o "_all_docs_include_docs_${SKIP}.json" && \
-              jq -c '.rows[].doc | {name: .versions[.["dist-tags"].latest].name, version: .["dist-tags"].latest, scripts: .versions[.["dist-tags"].latest].scripts}' "_all_docs_include_docs_${SKIP}.json" | grep -E "\"\s*(((pre|post)*(prepare|install))|prepublish)\s*\":" | jq -c "{name: .name, version: .version, scripts: .scripts | keys | sort}" > "_all_docs_include_docs_${SKIP}_scripts.ljson" && \
+              jq -c '.rows[].doc | {name: .versions[.["dist-tags"].latest].name, version: .["dist-tags"].latest, scripts: .versions[.["dist-tags"].latest].scripts}' "_all_docs_include_docs_*.json" | grep -E "\"\s*(((pre|post)*(prepare|install))|prepublish)\s*\":" | jq -c "{name: .name, version: .version, scripts: .scripts | keys | sort}" > "_all_docs_include_docs_${SKIP}_scripts.ljson" && \
               du -hs * && \
               wc -l "_all_docs_include_docs_${SKIP}_scripts.ljson" && \
               cat "_all_docs_include_docs_${SKIP}_scripts.ljson";
