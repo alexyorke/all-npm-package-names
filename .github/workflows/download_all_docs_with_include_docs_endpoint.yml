@@ -24,7 +24,7 @@ jobs:
           SKIP: ${{ matrix.skip }}
         run: |
               while true; do
-              (curl --compressed "https://replicate.npmjs.com/_all_docs?limit=10000&include_docs=true&skip=${SKIP}" > "_all_docs_include_docs_${SKIP}.json") && break;
+              (curl --compressed "https://replicate.npmjs.com/_all_docs?limit=100000&include_docs=true&skip=${SKIP}" > "_all_docs_include_docs_${SKIP}.json") && break;
               echo "Waiting for 1m...";
               sleep 1m;
               done;
