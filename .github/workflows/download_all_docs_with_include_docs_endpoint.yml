@@ -32,9 +32,9 @@ jobs:
               cd ..;
               ./zstd-1.4.9/programs/zstd --version;
               curl --compressed --retry 100 "https://replicate.npmjs.com/_all_docs?limit=100000&include_docs=true&skip=$SKIP" -o "_all_docs_include_docs_$SKIP.json" && \
-              jq -c '.rows[].doc | {name: .versions[.["dist-tags"].latest].name, version: .["dist-tags"].latest, scripts: .versions[.["dist-tags"].latest].scripts}' < "_all_docs_include_docs_$SKIP.json" | grep -F "install" > "_all_docs_include_docs_$SKIP.json" && \
-              ./zstd-1.4.9/programs/zstd -T0 --ultra --long -22 "_all_docs_include_docs_$SKIP.json" && du -hs * && \
-              cat "_all_docs_include_docs_$SKIP.json";
+              jq -c '.rows[].doc | {name: .versions[.["dist-tags"].latest].name, version: .["dist-tags"].latest, scripts: .versions[.["dist-tags"].latest].scripts}' "_all_docs_include_docs_$SKIP.json" | grep -E "\"\s*(((pre|post)*(prepare|install))|prepublish)\s*\":" | jq -c "{name: .name, version: .version, scripts: .scripts | keys | sort}" > "_all_docs_include_docs_$SKIP_scripts.ljson" && \
+              ./zstd-1.4.9/programs/zstd -T0 --ultra --long -22 "_all_docs_include_docs_$SKIP_scripts.ljson" && du -hs * && \
+              cat "_all_docs_include_docs_$SKIP_scripts.ljson";
 
 
 
