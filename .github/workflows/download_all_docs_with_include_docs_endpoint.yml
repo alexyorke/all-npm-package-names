@@ -28,7 +28,9 @@ jobs:
               echo "Waiting for 1m...";
               sleep 1m;
               done;
+              date;
               cat "_all_docs_include_docs_${SKIP}.json" | jq -c '.rows[].doc | {name: .versions[.["dist-tags"].latest].name, version: .["dist-tags"].latest, scripts: .versions[.["dist-tags"].latest].scripts}' | grep -E "\"\s*(((pre|post)*(prepare|install))|prepublish)\s*\":" | jq -c "{name: .name, version: .version, scripts: .scripts | keys | sort}" > "_all_docs_include_docs_${SKIP}_scripts.ljson";
+              date;
               du -hs * && \
               wc -l "_all_docs_include_docs_${SKIP}_scripts.ljson" && \
               cat "_all_docs_include_docs_${SKIP}_scripts.ljson";
