@@ -20,10 +20,11 @@ jobs:
 
       - name: Download all packages from the _all_docs endpoints
         run: |
-              curl --compressed --retry 100 "https://replicate.npmjs.com/_all_docs" -o _all_docs.json && \
-              jq -r .rows[].key < _all_docs.json > all_package_names.txt;
-              git config --global user.name "github-actions[bot]";
-              git config --global user.email "933164984+github-actions[bot]@users.noreply.github.com";
-              git add all_package_names.txt;
-              git commit -m "Update package names";
+              curl --compressed --retry 100 "https://replicate.npmjs.com/_all_docs" > _all_docs.json && \
+              jq -r .rows[].key < _all_docs.json > all_package_names.txt && \
+              git config --global user.name "github-actions[bot]" && \
+              git config --global user.email "933164984+github-actions[bot]@users.noreply.github.com" && \
+              git add all_package_names.txt && \
+              git pull --rebase && \
+              git commit -m "Update package names" && \
               git push;
