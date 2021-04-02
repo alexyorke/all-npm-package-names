@@ -8,7 +8,7 @@ There are many other packages and programs that do the same thing this one does,
 
 ## How often is it updated?
 
-It is updated every six hours, but the update may finish many hours later. This is because GitHub's runners aren't guaranteed to start precisely at that time, and the npm server's bandwidth fluctuates a lot.
+It is updated every hour, but the update may or may not succeed depending on if npm is up. This is because GitHub's runners aren't guaranteed to start precisely at that time, and the npm server's bandwidth fluctuates a lot.
 
 As long as GitHub Actions is running, this repo should be alive.
 
