@@ -11,7 +11,7 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
-    timeout-minutes: 30
+    timeout-minutes: 45
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -21,6 +21,7 @@ jobs:
 
       - name: Download all packages from the _all_docs endpoints
         run: |
+              set -e -o pipefail
               while true; do
                 curl --fail --compressed "https://replicate.npmjs.com/_all_docs" > _all_docs.json && break;
                 echo "Retrying...";
